@@ -58,14 +58,14 @@ void alocarProxMemBloco(size_t size, bloco ** head){
     }
 }
 
-void liberaMemBloco(bloco **head){
+void liberaMemBloco(bloco **head){ // libera o bloco de memória
     if(*head == NULL){}
     else{
         (*head) -> ehlivre = true;
     }
 }
 
-void imprimeMemBlock(bloco *atual){
+void imprimeMemBlock(bloco *atual){ // imprime se o bloco está livre, o endereço atual e o proximo nó
     while(atual != NULL){
         printf("é livre = %d, size %d, endereço de memoria = %x, atual = %x, prox nó = %x\n", atual->ehlivre, atual->size,atual->enderçoMemoria,atual,atual->prox);
         atual = atual -> prox;
