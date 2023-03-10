@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #define BLOCK_SIZE sizeof(bloco) // tamanho da estrutura
 
+
 struct newMalloc
 {
     struct newMalloc *prox; //ptr que aponta para o proximo pedaço da memória
@@ -73,20 +74,24 @@ void imprimeMemBlock(bloco *atual){ // imprime se o bloco está livre, o endere�
 }
 
 int main(){
+
+
     bloco *testeMemBloco = NULL;
-    alocarProxMemBloco(10,&testeMemBloco);
-    alocarProxMemBloco(35,&testeMemBloco);
-    alocarProxMemBloco(62,&testeMemBloco);
-    alocarProxMemBloco(100,&testeMemBloco);
+    alocarProxMemBloco(1,&testeMemBloco);
     alocarProxMemBloco(2,&testeMemBloco);
+    alocarProxMemBloco(3,&testeMemBloco);
+
     imprimeMemBlock(testeMemBloco);
 
     printf("\n Depois de liberar o segundo nó\n");
     liberaMemBloco(&(testeMemBloco->prox));
     imprimeMemBlock(testeMemBloco);
 
-    return 0;
+    int *x;
+    x = malloc(sizeof(int));
+    printf("Valor de x: %x\n",x);
 
+    return 0;
 
 
 }
