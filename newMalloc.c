@@ -10,7 +10,7 @@ struct newMalloc
     struct newMalloc *prox; //ptr que aponta para o proximo pedaço da memória
     int ehlivre; // verifica se o bloco esta livre ou não
     size_t size; // tamanho que será alocado na memoria
-    void *enderçoMemoria; // Inicio de onde a memoria foi alocada
+    void *enderecoMemoria; // Inicio de onde a memoria foi alocada
 
 }; typedef struct newMalloc bloco;
 
@@ -27,7 +27,7 @@ bloco *alocaMemBloco(size_t size){
         block -> prox = NULL;
         block -> ehlivre = false;
         block -> size = size;
-        block -> enderçoMemoria = memEnder + BLOCK_SIZE;
+        block -> enderecoMemoria = memEnder + BLOCK_SIZE;
         return block;
     }
 
@@ -53,7 +53,7 @@ void alocarProxMemBloco(size_t size, bloco ** head){
             novoBloco -> prox = NULL;
             novoBloco -> ehlivre = false;
             novoBloco -> size = size;
-            novoBloco ->enderçoMemoria = memEnder + BLOCK_SIZE;
+            novoBloco ->enderecoMemoria = memEnder + BLOCK_SIZE;
             atual -> prox = novoBloco;
         }
     }
@@ -68,7 +68,7 @@ void liberaMemBloco(bloco **head){ // libera o bloco de memória
 
 void imprimeMemBlock(bloco *atual){ // imprime se o bloco está livre, o endereço atual e o proximo nó
     while(atual != NULL){
-        printf("é livre = %d, size %d, endereço de memoria = %x, atual = %x, prox nó = %x\n", atual->ehlivre, atual->size,atual->enderçoMemoria,atual,atual->prox);
+        printf("é livre = %d, size %d, endereço de memoria = %x, atual = %x, prox nó = %x\n", atual->ehlivre, atual->size,atual->enderecoMemoria,atual,atual->prox);
         atual = atual -> prox;
     }
 }
@@ -117,10 +117,10 @@ int main(){
     int diferenca=p2-p1;
     printf("diferenca: %d\n",diferenca);
     free(p1);
-    free(p2);  
+    free(p2);   
 
     
-    printf("My Malloc\n");
+   printf("My Malloc\n");
     void *p3=alocaMemBloco(sizeof (int));
     void *p4=alocaMemBloco(sizeof (int));
     
@@ -128,6 +128,60 @@ int main(){
     printf("diferenca: %d\n",diferenca);
     liberaMemBloco(p3);
     liberaMemBloco(p4);
+
+    printf("------------ Teste de fragmentação -----------------------\n");
+    printf("My Malloc:\n");
+    void *ponteir[20];
+    int quantidadeArmazenada=0;
+    int quantidadeFragementada=0;
+    for (int i = 0; i < 20; i++)
+    {
+        int diferenca=0;
+        ponteir[i] = alocaMemBloco(i);
+        if (i>1)
+        {
+            diferenca=ponteir[i]-ponteir[i-2];
+            
+        }
+        
+       
+        if(i%2==0){
+            liberaMemBloco(ponteir[i]);
+        }else{
+           i==1? printf("memoria:%p, armazeno:%d\n",ponteir[i],i):printf("memoria:%p, armazeno:%d, diferenca ultimo: %d\n",ponteir[i],i,diferenca);
+            quantidadeArmazenada=i+quantidadeArmazenada;
+            quantidadeFragementada=diferenca-i+quantidadeFragementada;
+        }
+        
+        
+    }
+    printf("quantidade de armazenamentos:%d,quantidade Fragementada: %d\n",quantidadeArmazenada,quantidadeFragementada);
+    printf("Malloc Original:\n");
+    quantidadeArmazenada=0;
+    quantidadeFragementada=0;
+    for (int i = 0; i < 20; i++)
+    {
+        int diferenca=0;
+        ponteir[i]=malloc(i);
+        if (i>1){
+            diferenca=ponteir[i]-ponteir[i-2];
+            
+        }
+        
+       
+        if(i%2==0){
+            free(ponteir[i]);
+        }else{
+           i==1? printf("memoria:%p, armazeno:%d\n",ponteir[i],i):printf("memoria:%p, armazeno:%d, diferenca ultimo: %d\n",ponteir[i],i,diferenca);
+            quantidadeArmazenada=i+quantidadeArmazenada;
+            quantidadeFragementada=diferenca-i+quantidadeFragementada;
+        }
+        
+        
+    }
+
+    printf("quantidade de armazenamentos:%d,quantidade Fragementada: %d\n",quantidadeArmazenada,quantidadeFragementada);
+
     return 0;
 
 
