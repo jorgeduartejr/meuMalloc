@@ -75,22 +75,59 @@ void imprimeMemBlock(bloco *atual){ // imprime se o bloco está livre, o endere�
 
 int main(){
 
+    // bloco *testeMemBloco = NULL;
+    // alocarProxMemBloco(1,&testeMemBloco);
+    // alocarProxMemBloco(2,&testeMemBloco);
+    // alocarProxMemBloco(3,&testeMemBloco);
 
-    bloco *testeMemBloco = NULL;
-    alocarProxMemBloco(1,&testeMemBloco);
-    alocarProxMemBloco(2,&testeMemBloco);
-    alocarProxMemBloco(3,&testeMemBloco);
+    // imprimeMemBlock(testeMemBloco);
 
-    imprimeMemBlock(testeMemBloco);
+    // printf("\n Depois de liberar o segundo nó\n");
+    // liberaMemBloco(&(testeMemBloco->prox));
+    // imprimeMemBlock(testeMemBloco);
 
-    printf("\n Depois de liberar o segundo nó\n");
-    liberaMemBloco(&(testeMemBloco->prox));
-    imprimeMemBlock(testeMemBloco);
+    printf("teste1:aloca todos os numeros de 0 a 9, caso seje par o teste libera a memoriaque deveria ser armazenada. \n") ;
+    printf("My Malloc:\n");
+    for (int i = 0; i < 10; i++)
+    {
+        void *p=alocaMemBloco(i);
+        if(i%2==0){
+            liberaMemBloco(p);
+        }else{
+            printf("memoria:%p, armazeno:%d\n",p,i);
+        }
+    }
+    printf("Malloc Original:\n");
+    for (int i = 0; i < 10; i++)
+    {
+        void *p=malloc(i);
+        if(i%2==0){
+            free(p);
+        }
+        else{
+            printf("memoria:%p, armazeno:%d\n",p,i);
+        }
+    }
 
-    int *x;
-    x = malloc(sizeof(int));
-    printf("Valor de x: %x\n",x);
+    printf("--------------------------------\n");
+    printf("teste2:compara quantos espacos em bytes ele e separado em um alocador 0\n");
+    printf("Malloc Original\n");
+    void *p1=malloc(sizeof (int));
+    void *p2=malloc(sizeof (int));
+    int diferenca=p2-p1;
+    printf("diferenca: %d\n",diferenca);
+    free(p1);
+    free(p2);  
 
+    
+    printf("My Malloc\n");
+    void *p3=alocaMemBloco(sizeof (int));
+    void *p4=alocaMemBloco(sizeof (int));
+    
+    diferenca=p4-p3;
+    printf("diferenca: %d\n",diferenca);
+    liberaMemBloco(p3);
+    liberaMemBloco(p4);
     return 0;
 
 
