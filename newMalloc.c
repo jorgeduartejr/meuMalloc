@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include <time.h>
+
 #define BLOCK_SIZE sizeof(bloco) // tamanho da estrutura
 
 
@@ -85,6 +87,10 @@ int main(){
     // printf("\n Depois de liberar o segundo nó\n");
     // liberaMemBloco(&(testeMemBloco->prox));
     // imprimeMemBlock(testeMemBloco);
+    clock_t start_t, end_t;
+    double total_t;
+    //start_t = clock();
+    
 
     printf("teste1:aloca todos os numeros de 0 a 9, caso seje par o teste libera a memoriaque deveria ser armazenada. \n") ;
     printf("My Malloc:\n");
@@ -96,8 +102,20 @@ int main(){
         }else{
             printf("memoria:%p, armazeno:%d\n",p,i);
         }
-    }
-    printf("Malloc Original:\n");
+        start_t = clock();
+        printf("Starting of the program, start_t = %ld\n", start_t);
+        printf("Going to scan a big loop, start_t = %ld\n", start_t);
+        for(int i=0; i< 10000000; i++) {
+        }
+                end_t = clock();
+                printf("End of the big loop, end_t = %ld\n", end_t);
+                
+                total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
+                printf("Total time taken by CPU: %f\n", total_t  );
+                printf("Exiting of the program...\n");
+
+        }
+    
     for (int i = 0; i < 10; i++)
     {
         void *p=malloc(i);
@@ -107,8 +125,19 @@ int main(){
         else{
             printf("memoria:%p, armazeno:%d\n",p,i);
         }
-    }
+    start_t = clock();
+    printf("Starting of the program, start_t = %ld\n", start_t);
+    printf("Going to scan a big loop, start_t = %ld\n", start_t);
 
+    end_t = clock();
+    printf("End of the big loop, end_t = %ld\n", end_t);
+    total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
+    printf("Total time taken by CPU: %f\n", total_t  );
+    printf("Exiting of the program...\n");
+    }
+    printf("--------------------------------\n");
+    printf("--------------------------------\n");
+    printf("--------------------------------\n");
     printf("--------------------------------\n");
     printf("teste2:compara quantos espacos em bytes ele e separado em um alocador 0\n");
     printf("Malloc Original\n");
@@ -118,7 +147,7 @@ int main(){
     printf("diferenca: %d\n",diferenca);
     free(p1);
     free(p2);   
-
+    
     
    printf("My Malloc\n");
     void *p3=alocaMemBloco(sizeof (int));
@@ -128,6 +157,10 @@ int main(){
     printf("diferenca: %d\n",diferenca);
     liberaMemBloco(p3);
     liberaMemBloco(p4);
+
+    
+
+    
 
     printf("------------ Teste de fragmentação -----------------------\n");
     printf("My Malloc:\n");
@@ -181,6 +214,10 @@ int main(){
     }
 
     printf("quantidade de armazenamentos:%d,quantidade Fragementada: %d\n",quantidadeArmazenada,quantidadeFragementada);
+
+
+    clock_t inicio, fim;
+    long double tempo;
 
     return 0;
 
